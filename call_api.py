@@ -1,6 +1,3 @@
-# call_api.py
-
-# Necessary Imports
 from fyers_api import fyersModel
 import pickle
 
@@ -10,11 +7,9 @@ with open('fyers_token.pickle', 'rb') as f:
 
 is_async = False  # (By default False, Change to True for asnyc API calls.)
 
-# Create Model
 fyers = fyersModel.FyersModel(is_async)
 
-# Check your Profile
-print (fyers.get_profile(token=token))
+print(fyers.get_profile(token=token))
 
 # Check Funds
 print(fyers.funds(token=token))

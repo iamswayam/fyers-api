@@ -9,12 +9,13 @@ from decouple import config
 import time
 import re
 import pickle
+from webdriver_manager.chrome import ChromeDriverManager
 
 # If you are using Firefox
-driver = webdriver.Firefox()
-# If you are using Chrome
 # driver = webdriver.Chrome()
-
+# If you are using Chrome
+# driver = webdriver.Chrome(ChromeDriverManager().install())
+driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
 # Load all the credentials from .env file
 
 USERNAME = config('USERNAME')
@@ -68,7 +69,7 @@ def generate_token_url(app_id, secret_id):
     time.sleep(30)
     # Get the current URL (which contains access token)
     url_with_token = driver.current_url
-    driver.quit() # Close the browser
+    driver.quit()  # Close the browser
     return url_with_token
 
 
@@ -86,7 +87,8 @@ def extract_token(full_url):
         It returns the access token in str format and later on saves it as a pickle in a file called fyers_token.pickle
         This access token is valid through 7-8 AM of the next day.
     """
-    access_token = re.search(r'(?<=https://127.0.0.1/\?access_token=).*?(?=user_id=RP0015)', full_url).group(0)
+    access_token = re.search(
+        r'(?<=https://127.0.0.1/\?access_token=).*?(?=user_id=RP0015)', full_url).group(0)
     if access_token:
         with open('fyers_token.pickle', 'wb') as f:
             pickle.dump(access_token, f)
